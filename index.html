@@ -1,0 +1,169 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111221"><meta name="description" content="Genera tu próxima partida de Legendary What If con preparación para 1 a 5 jugadores."><title>Legendary What If · Randomizador</title><style>@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
+:root{color-scheme:dark;--bg:#10111c;--panel:#1a1b2c;--muted:#b0b0c5;--orange:#ff865b;--line:#353447}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 90% 5%,#35244688,transparent 45%),var(--bg);color:#f5f0ed;font-family:'DM Sans',sans-serif;font-size:16px}header,main,footer{max-width:1250px;margin:auto}header{padding:32px 34px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}a{color:inherit}.brand{text-decoration:none;font:bold 32px 'Barlow Condensed',sans-serif;letter-spacing:2px}.brand span{display:block;font:11px 'DM Sans',sans-serif;letter-spacing:2px;color:var(--muted);margin-top:5px}.edition{font-size:12px;letter-spacing:2px;color:var(--muted);border:1px solid var(--line);border-radius:30px;padding:10px 15px}main{padding:0 34px}.intro{display:flex;align-items:center;justify-content:space-between;padding:56px 0 45px}.eyebrow{font-size:12px;letter-spacing:2px;color:var(--orange);font-weight:700}h1{font:700 clamp(44px,5.3vw,72px)/1.02 'Barlow Condensed',sans-serif;text-transform:uppercase;margin:18px 0}h1 em{color:var(--orange);font-style:normal}.subtitle{color:var(--muted);line-height:1.65}.orbit{position:relative;width:300px;height:270px;display:grid;place-content:center;transform:rotate(-9deg);margin-right:45px;background:radial-gradient(ellipse,transparent 42%,#e8785c30 44%,transparent 46%,transparent 54%,#b688eb40 55%,transparent 57%)}.portal{font:800 73px/.8 'Barlow Condensed',sans-serif;letter-spacing:-3px;text-align:center;color:#fcdfc4;text-shadow:5px 5px 0 #793851}.portal span{font-size:100px;color:var(--orange)}.orbit b{position:absolute;bottom:8px;left:30px;font-size:10px;letter-spacing:3px;color:var(--muted)}.controls{display:grid;grid-template-columns:.8fr 1.3fr 1.4fr .8fr auto;gap:15px;padding:24px;background:var(--panel);border:1px solid var(--line);border-radius:16px;align-items:end}label{display:block;color:var(--muted);font-size:14px;margin-bottom:10px}select{width:100%;min-width:0;color:#fff;background:#11121f;border:1px solid #454255;border-radius:7px;padding:13px 32px 13px 12px;font:inherit;font-size:14px;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='m1 1 5 5 5-5' fill='none' stroke='%23beb9cc' stroke-width='2'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}button{cursor:pointer;font:600 14px 'DM Sans',sans-serif;border-radius:7px;padding:13px 16px;border:1px solid var(--line);color:#eee;background:transparent;min-height:44px}button:hover{background:#353246}button:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--orange);outline-offset:4px}.primary{background:var(--orange);color:#241514;border:0;white-space:nowrap}.primary:hover{background:#ffab86}.primary span{margin-left:10px}.result-head{display:flex;align-items:center;justify-content:space-between;margin:34px 0 15px}h2{font-size:22px;margin:0}.quiet{margin-left:8px;font-size:13px}#status{color:var(--orange);font-size:14px;margin:0 0 15px}.top-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:24px}.boss{border-top:3px solid #e96c69}.scheme{border-top:3px solid #a18ae1}.kicker{color:var(--muted);font-size:12px;font-weight:700;letter-spacing:1.6px;margin:0 0 14px}.card h3{font:600 30px/1.1 'Barlow Condensed',sans-serif;margin:0 0 12px}.card p{color:var(--muted);line-height:1.5;font-size:14px}.tag{color:var(--orange);font-size:13px}.hero-section{margin:24px 0}.section-line{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.section-line h3{font-size:18px}.section-line span{color:var(--muted);font-size:13px}.heroes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.hero{display:flex;gap:15px;align-items:center;background:#1a1b2c;border:1px solid var(--line);border-radius:9px;padding:17px}.hero i{font-style:normal;border:1px solid #8b6b9d;border-radius:50%;width:37px;height:37px;display:grid;place-content:center;color:#e4c3fa;flex-shrink:0;font:600 21px 'Barlow Condensed',sans-serif}.hero b{font-size:15px}.hero small{display:block;color:var(--muted);font-size:12px;margin-top:4px}.lower{display:grid;grid-template-columns:1fr 1fr;gap:18px}.checklist{list-style:none;padding:0;margin:10px 0}.checklist li{padding:10px 0;border-bottom:1px solid #ffffff0c}.checklist label{color:#eee;display:flex;gap:12px;align-items:start;line-height:1.5;margin:0;font-size:15px}.checklist input{accent-color:var(--orange);width:18px;height:18px;flex-shrink:0;margin-top:3px}.checklist label:has(input:checked){text-decoration:line-through;color:#8e8a9c}.stats{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.stat{flex:1;background:#10111c;border-radius:8px;padding:14px;min-width:80px}.stat strong{font:600 30px 'Barlow Condensed',sans-serif;display:block;color:#f2ceaa}.stat span{font-size:12px;color:var(--muted)}.notes{padding-left:20px;font-size:15px;color:#d0cada;line-height:1.6}.notes li{margin:10px 0}.sources{border-top:1px solid var(--line);margin:30px 0;padding:23px 0;color:var(--muted);font-size:14px;line-height:1.7}summary{cursor:pointer;color:#eee}footer{padding:30px 34px;color:var(--muted);font-size:12px;display:flex;justify-content:space-between;gap:20px}@media(max-width:1000px){.controls{grid-template-columns:1fr 1fr}.primary{grid-column:1/-1}.orbit{margin:0}.intro{padding-top:35px}}@media(max-width:650px){header,main,footer{padding-left:18px;padding-right:18px}.edition{font-size:10px;padding:8px;letter-spacing:0}.brand{font-size:25px}.brand span{font-size:9px}.orbit{display:none}.intro{padding-bottom:24px}.controls{padding:17px;gap:13px}.top-grid,.lower{grid-template-columns:1fr}.heroes{grid-template-columns:1fr 1fr}.hero{padding:12px;gap:8px}.hero i{display:none}.hero b{font-size:14px}.result-head{align-items:start;gap:10px}.result-head>div{display:flex;flex-direction:column;gap:5px}.quiet{font-size:12px;padding:8px}.card{padding:20px}footer{flex-direction:column}.card h3{font-size:28px}}@media print{body{background:white;color:black}header,.intro,.controls,.result-head,#status,.sources,footer{display:none}.card,.hero,.stat{background:white;border-color:#ccc;color:black}.card p,.notes,.checklist label,.stat span,.kicker{color:#333}.card h3,.stat strong{color:black}main{padding:10px}.card{break-inside:avoid}button{display:none}}
+
+.collection{margin:0 0 18px;padding:20px 24px;border:1px solid var(--line);border-radius:14px;background:#171825}.collection legend{padding:0 10px;font-weight:600}.set-options{display:flex;gap:14px;flex-wrap:wrap}.set-options label{display:flex;align-items:center;gap:9px;margin:0;padding:12px;border:1px solid #494159;border-radius:8px;color:#eee;cursor:pointer}.set-options input{width:19px;height:19px;accent-color:var(--orange)}.collection p{font-size:14px;color:var(--orange)}.collection small{color:var(--muted);line-height:1.5}.checklist small{display:block;color:var(--muted);font-size:12px}button:disabled{opacity:.45;cursor:not-allowed}.extra-title{margin-top:25px!important}textarea{width:100%;background:#181928;color:white;border:1px solid var(--line);padding:15px;font:14px monospace}@media print{.collection,#copy-fallback{display:none}}</style></head><body>
+<header><a href="#" class="brand">LEGENDARY<span>EL MULTIVERSO DE JACO</span></a><span class="edition">WHAT IF…? + SECRET WARS 1 Y 2</span></header>
+<main><section class="intro"><div><p class="eyebrow">TRES CAJAS. UN MULTIVERSO.</p><h1>¿Y si esta fuera<br>tu próxima <em>partida?</em></h1><p class="subtitle">Reúne a tus héroes. Descubre la amenaza.<br>Deja que el multiverso elija el resto.</p></div><div class="orbit" aria-hidden="true"><div class="portal">WHAT<br><span>IF…?</span></div><i></i><b>OTRA REALIDAD TE ESPERA</b></div></section>
+<fieldset class="collection"><legend>Cajas para el sorteo</legend><div class="set-options"><label><input id="set-wi" type="checkbox" checked> What If…?</label><label><input id="set-sw1" type="checkbox" checked> Secret Wars Vol. 1</label><label><input id="set-sw2" type="checkbox" checked> Secret Wars Vol. 2</label></div><p id="collection-count"></p><small>Preparación para 1–5 jugadores según What If. Los componentes básicos se usan siempre, aunque desactives su contenido del sorteo.</small></fieldset>
+<section class="controls" aria-label="Configurar partida"><div><label for="players">Jugadores</label><select id="players"><option value="1">1 · Solitario</option><option value="2">2 jugadores</option><option value="3">3 jugadores</option><option value="4" selected>4 jugadores</option><option value="5">5 jugadores</option></select></div><div><label for="master">Mastermind</label><select id="master"><option value="-1">Al azar</option></select></div><div><label for="scheme">Plan · Scheme</label><select id="scheme"><option value="-1">Al azar</option></select></div><div><label for="mode">Versión del jefe</label><select id="mode"><option value="normal">Normal</option><option value="epic">Épica</option></select></div><button class="primary" id="generate">Generar partida <span>✦</span></button></section>
+<div class="result-head"><h2>Tu universo de juego</h2><div><button id="copy" class="quiet">Copiar preparación</button><button id="print" class="quiet">Imprimir</button></div></div><p id="status" role="status"></p>
+<section id="result" aria-live="polite"></section>
+<div id="copy-fallback" hidden><label for="copy-text">Preparación para copiar</label><textarea id="copy-text" rows="12" readonly></textarea></div>
+<details class="sources"><summary>Contenido, reglas y fuentes</summary><p>Con las tres cajas: 38 héroes, 12 masterminds, 20 planes, 17 grupos de villanos y 9 grupos de esbirros. Los nombres se conservan en inglés para localizar tus cartas. Cada componente indica su caja.</p><p>El modo épico sortea solo los cuatro jefes de What If, que tienen reverso épico. Los ocho de Secret Wars se usan en modo normal. Esta herramienta prepara partidas cooperativas; no activa la variante de jugador mastermind.</p><p>Build an Army of Annihilation (otros henchmen de al menos 10 cartas): sustitución elegida por Jaco. Se reserva un grupo adicional distinto del usado en el mazo y se colocan 10 cartas en KO como Annihilation Wave.</p><p>Se mantienen las cantidades de What If y se aplican las modificaciones de cada plan. Los planes tienen prioridad sobre Always Leads. Las reglas durante la partida se consultan en las cartas. El azar no garantiza una dificultad equilibrada.</p><p><a href="https://www.boardgame-news.com/rules/Legendary_WhatIf_Rulebook.pdf" target="_blank" rel="noopener">Reglamento What If</a> · <a href="https://www.legendarycardgame.com/whatif" target="_blank" rel="noopener">Cartas What If</a> · <a href="https://www.legendarycardgame.com/secret-wars-volume-1" target="_blank" rel="noopener">Cartas Secret Wars 1</a> · <a href="https://www.legendarycardgame.com/secret-wars-volume-2" target="_blank" rel="noopener">Cartas Secret Wars 2</a></p></details>
+</main><footer>Hecho para noches de Legendary. <span>Herramienta de aficionado · Sin afiliación con Marvel ni Upper Deck.</span></footer><script>const SETS={wi:'What If…?',sw1:'Secret Wars Vol. 1',sw2:'Secret Wars Vol. 2'};
+const records=(set,names)=>names.map(name=>({name,set}));
+const HEROES=[
+ ...records('wi',['Apocalyptic Black Widow','Captain Carter','Doctor Strange Supreme','Gamora, Destroyer of Thanos','Killmonger, Spec Ops','Party Thor','Star-Lord T’Challa','Uatu, The Watcher']),
+ ...records('sw1',['Apocalyptic Kitty Pryde','Black Bolt','Black Panther','Captain Marvel','Dr. Strange','Lady Thor','Magik','Maximus','Namor, the Sub-Mariner','Old Man Logan','Proxima Midnight','Superior Iron Man','Thanos','Ultimate Spider-Man']),
+ ...records('sw2',['Agent Venom','Arkon the Magnificent','Beast','Black Swan','The Captain and the Devil','Captain Britain','Corvus Glaive','Dr. Punisher, the Soldier Supreme','Elsa Bloodstone','Phoenix Force Cyclops','Ruby Summers','Shang-Chi','Silk','Soulsword Colossus','Spider-Gwen','Time-Traveling Jean Grey'])];
+const VILLAINS=[...records('wi',['Black Order Guards','Intergalactic Party Animals','Rival Overlords','Strange’s Demons','Zombie Avengers']),...records('sw1',['The Deadlands','Domain of Apocalypse','Limbo','Manhattan (Earth-1610)','Sentinel Territories','Wasteland']),...records('sw2',['Deadpool’s Secret Secret Wars','Guardians of Knowhere','K’un-Lun','Monster Metropolis','Utopolis','X-Men ’92'])];
+const HENCHMEN=[...records('wi',['Giants of Jotunheim','Ultron Sentries','Vibranium Liberator Drones']),...records('sw1',['Ghost Racers','M.O.D.O.K.s','Thor Corps']),...records('sw2',['Khonshu Guardians','Magma Men','Spider-Infected'])];
+const MASTERS=[
+ {name:'Hank Pym, Yellowjacket',set:'wi',epic:true},
+ {name:'Killmonger, The Betrayer',set:'wi',epic:true,hench:'Vibranium Liberator Drones',hero:'Killmonger, Spec Ops'},
+ {name:'Ultron Infinity',set:'wi',epic:true,hench:'Ultron Sentries'},
+ {name:'Zombie Scarlet Witch',set:'wi',epic:true,villain:'Zombie Avengers'},
+ {name:'Madelyne Pryor, Goblin Queen',set:'sw1',villain:'Limbo'},
+ {name:'Nimrod, Super Sentinel',set:'sw1',villain:'Sentinel Territories'},
+ {name:'Wasteland Hulk',set:'sw1',villain:'Wasteland'},
+ {name:'Zombie Green Goblin',set:'sw1',villain:'The Deadlands'},
+ {name:'Immortal Emperor Zheng-Zhu',set:'sw2',villain:'K’un-Lun'},
+ {name:'King Hyperion',set:'sw2',villain:'Utopolis'},
+ {name:'Shiklah, the Demon Bride',set:'sw2',villain:'Monster Metropolis'},
+ {name:'Spider-Queen',set:'sw2',hench:'Spider-Infected'}];
+const SCHEMES=[
+ {id:'nexus',name:'Breach the Nexus of All Realities',set:'wi'},
+ {id:'zoo',name:'Collect an Interstellar Zoo',set:'wi',twists:11},
+ {id:'zombies',name:'Marvel Zombies',set:'wi',twists:4},
+ {id:'party',name:'Trash Earth with Hugest Party Ever',set:'wi',twists:6,hero:'Party Thor',villain:'Intergalactic Party Animals'},
+ {id:'annihilation',name:'Build an Army of Annihilation (otros henchmen de al menos 10 cartas)',set:'sw1',twists:9,note:'Sustitución elegida por Jaco: usa otro grupo de esbirros para representar Annihilation Wave. Coloca 10 cartas de ese grupo adicional en la pila de KO; no las mezcles en el mazo de villanos. Trátalas como Annihilation Henchmen para los efectos del plan.'},
+ {id:'sidekicks',name:'Corrupt the Next Generation of Heroes',set:'sw1',twists:8,note:'Mezcla 10 Sidekicks en el mazo de villanos; quedan 5 en su reserva.'},
+ {id:'hands',name:'Crush Them with My Bare Hands',set:'sw1',twists:5},
+ {id:'alliance',name:'Dark Alliance',set:'sw1',twists:8,note:'El segundo mastermind entra con 1 táctica en el primer Twist; podrá recibir las restantes. Mantén sus cartas aparte hasta entonces.'},
+ {id:'fragmented',name:'Fragmented Realities',set:'sw1',extraVillain:1,note:'Reparte el mazo sin Twists en partes iguales, una por jugador; añade 2 Twists a cada parte. Cada jugador tiene una dimensión de una sola casilla; no hay ciudad normal.'},
+ {id:'tyrants',name:'Master of Tyrants',set:'sw1',twists:8,note:'Mezcla las 12 tácticas de los tres jefes extra en el mazo de villanos. Sus cartas de mastermind no entran en juego.'},
+ {id:'plague',name:'Pan-Dimensional Plague',set:'sw1',twists:10},
+ {id:'smash',name:'Smash Two Dimensions Together',set:'sw1',twists:8,extraVillain:1,note:'Coloca el mazo en el Banco. Juega con dos ciudades paralelas de tres espacios; elimina Banco y Alcantarillas.'},
+ {id:'hordes',name:'Deadlands Hordes Charge the Wall',set:'sw2',twists:8,extraVillain:1},
+ {id:'barons',name:'Enthrone the Barons of Battleworld',set:'sw2',twists:8,note:'Deja sitio para los villanos que asciendan a mastermind durante la partida; no se añaden otros jefes en la preparación.'},
+ {id:'fountain',name:'The Fountain of Eternal Life',set:'sw2',twists:8},
+ {id:'emperor',name:'The God-Emperor of Battleworld',set:'sw2',twists:8,note:'El propio plan se convertirá en otro mastermind; no hace falta sortear una carta de jefe adicional.'},
+ {id:'khonshu',name:'The Mark of Khonshu',set:'sw2',twists:10,hench:'Khonshu Guardians'},
+ {id:'kungfu',name:'Master the Mysteries of Kung-Fu',set:'sw2',twists:8},
+ {id:'secretwars',name:'Secret Wars',set:'sw2',twists:8,note:'Los tres jefes de reserva entran, por orden, en los Twists 1, 2 y 3, con 1 táctica aleatoria cada uno.'},
+ {id:'ambitions',name:'Sinister Ambitions',set:'sw2',twists:6,note:'Baraja las Ambitions de las cajas activadas y añade 10 al azar al mazo de villanos.'}];
+const RISE=['Zombie Avengers','The Deadlands'];
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function pick(pool,n,required=[]){required=[...new Set(required)];if(required.some(x=>!pool.includes(x))||required.length>n||pool.length<n)throw Error('No hay suficientes cartas compatibles en las cajas seleccionadas.');return shuffle([...required,...shuffle(pool.filter(x=>!required.includes(x))).slice(0,n-required.length)]);}
+function catalog(sets){const included=x=>sets.includes(x.set);return {heroes:HEROES.filter(included),villains:VILLAINS.filter(included),henchmen:HENCHMEN.filter(included),masters:MASTERS.filter(included),schemes:SCHEMES.filter(included)};}
+function settingsFor(p,m,s){let v=p,h=p<4?1:2,heroes=p===1?3:p===5?6:5,b=[0,1,2,8,8,16][p],twists=s.twists,notes=[];const vr=[],hr=[],he=[];
+ if(s.unavailable)throw Error(s.unavailable);
+ if(s.id==='nexus'){v=Math.max(3,p);twists=v*2;notes.push('Forma una Realidad por grupo de villanos con 2 Twists cada una. Distribuye esbirros, espectadores y Master Strikes lo más uniformemente posible; baraja cada Realidad por separado.');}
+ v+=s.extraVillain||0;
+ if(s.extraVillain)notes.push('El número mostrado ya incluye el grupo de villanos adicional del plan.');
+ if(s.id==='hands'&&p===1){v++;notes.push('En solitario este plan añade un grupo de villanos; ya está incluido.');}
+ if(s.id==='fragmented')twists=p*2;
+ if(s.id==='fountain'&&p===1)twists=4;
+ if(s.id==='zombies'&&p<=2)b+=3;
+ if(s.hero)hr.push(s.hero);if(m.hero)hr.push(m.hero);
+ if(s.villain)vr.push(s.villain);
+ if(s.id==='zombies'&&p===1&&m.villain&&!RISE.includes(m.villain)){notes.push('Solitario: Marvel Zombies exige un grupo con Rise of the Living Dead y sustituye al grupo habitual del mastermind. Aplica las referencias del jefe a ese grupo.');}
+ else if(m.villain&&!vr.includes(m.villain)){
+  if(p===1&&vr.length===v){notes.push('Solitario: el grupo exigido por el plan sustituye al del mastermind. Aplica a ese grupo las referencias del jefe a su grupo habitual.');if(m.name==='Zombie Scarlet Witch')notes.push('Todos los villanos del grupo usado añaden «Zombie» a su nombre y Ambush: Rise of the Living Dead.');}
+  else vr.push(m.villain);
+ }
+ if(s.hench)he.push(s.hench);
+ if(m.hench&&!he.includes(m.hench)){
+  if(he.length===h){notes.push('El plan tiene prioridad: '+s.hench+' sustituye a '+m.hench+'. Lee las habilidades del jefe teniendo en cuenta esa sustitución.');}
+  else he.push(m.hench);
+ }
+ if(s.note)notes.push(s.note);
+ return {v,h,heroes,b,twists,vr,hr,he,notes};
+}
+function generate(p,masterName='',schemeId='',epic=false,sets=['wi','sw1','sw2']){
+ if(!Number.isInteger(p)||p<1||p>5)throw Error('Elige de 1 a 5 jugadores.');
+ if(!sets.length)throw Error('Activa al menos una caja.');
+ const c=catalog(sets);let ms=c.masters.filter(m=>(!masterName||m.name===masterName)&&(!epic||m.epic));let ss=c.schemes.filter(s=>(!schemeId||s.id===schemeId)&&!s.unavailable);
+ if(schemeId&&c.schemes.find(s=>s.id===schemeId)?.unavailable)throw Error(c.schemes.find(s=>s.id===schemeId).unavailable);
+ if(!ms.length)throw Error('No hay jefes compatibles. El modo épico solo existe para los cuatro jefes de What If.');
+ const pairs=[];for(const m of ms)for(const s of ss){const cfg=settingsFor(p,m,s);let need=cfg.vr.length;if(s.id==='zombies'&&!cfg.vr.some(x=>RISE.includes(x)))need++;if(need<=cfg.v&&cfg.v<=c.villains.length&&cfg.h<=c.henchmen.length)pairs.push([m,s]);}
+ if(!pairs.length)throw Error('Esta selección no permite completar los grupos exigidos. Cambia el plan, el jefe o las cajas.');
+ const [master,scheme]=shuffle(pairs)[0],cfg=settingsFor(p,master,scheme);let {vr,hr,he,notes}=cfg;
+ let villainPool=c.villains.map(x=>x.name);
+ if(scheme.id==='zombies'){
+  let chosenRise=vr.find(x=>RISE.includes(x))||pick(villainPool.filter(x=>RISE.includes(x)),1)[0];vr=[...new Set([...vr,chosenRise])];villainPool=villainPool.filter(x=>!RISE.includes(x)||x===chosenRise);
+  notes.push('Marvel Zombies: se usa exactamente un grupo con Rise of the Living Dead.');
+ }
+ const heroes=pick(c.heroes.map(x=>x.name),cfg.heroes,hr),villains=pick(villainPool,cfg.v,vr),henchmen=pick(c.henchmen.map(x=>x.name),cfg.h,he);
+ const extraHeroes=[],extraMasters=[],extraHenchmen=[],supplies=[];
+ if(scheme.id==='annihilation'){const name=pick(c.henchmen.map(x=>x.name).filter(x=>!henchmen.includes(x)),1)[0];extraHenchmen.push({name,count:10,destination:'Pila de KO · sustituye Annihilation Wave'});}
+ if(['zombies','khonshu'].includes(scheme.id)){
+  const name=pick(c.heroes.map(x=>x.name).filter(x=>!heroes.includes(x)),1)[0],count=scheme.id==='zombies'?8:14;extraHeroes.push({name,count});notes.push('Añade '+count+' cartas '+(count===8?'aleatorias ':'')+'de '+name+' al mazo de villanos. Este héroe es adicional y no entra en el mazo de héroes.'+(count===8?' Aparta sus 6 cartas restantes.':''));
+ }
+ let n=scheme.id==='alliance'?1:['tyrants','secretwars'].includes(scheme.id)?3:0;
+ if(n){const pool=c.masters.filter(m=>m.name!==master.name&&(!m.hero||!extraHeroes.some(h=>h.name===m.hero)));for(const name of pick(pool.map(m=>m.name),n)){extraMasters.push({name,tactics:scheme.id==='tyrants'?4:scheme.id==='alliance'?4:1});const m=MASTERS.find(m=>m.name===name);if(m.hero&&scheme.id!=='tyrants'&&!heroes.includes(m.hero)){supplies.push('Reserva las 14 cartas de '+m.hero+': se añaden al mazo de héroes cuando entre '+name+'.');}}
+  if(scheme.id!=='tyrants')notes.push('Los jefes de reserva se usan en versión normal. No añadas sus grupos Always Leads; sí resuelve sus instrucciones de entrada cuando aparezcan.');
+ }
+ if(sets.includes('sw1'))supplies.push(scheme.id==='sidekicks'?'Reserva de Sidekicks: 5 cartas (otras 10 están en el mazo de villanos).':'Reserva de Sidekicks: 15 cartas; recluta como máximo uno por turno por 2 puntos de reclutamiento.');
+ if(scheme.id==='ambitions')supplies.push('10 Ambitions aleatorias → mazo de villanos.');
+ if(scheme.id==='sidekicks')supplies.push('10 Sidekicks → mazo de villanos.');
+ if(p===1)notes.push('Solitario What If: elige 4 cartas aleatorias del grupo de esbirros; mezcla 2 en el mazo y haz entrar las otras 2 antes del primer turno, resolviendo Ambush. No reveles carta adicional tras un Master Strike.');
+ if(p>=4)notes.push('Calentamiento: el primer turno de cada jugador no revela carta de villanos.');
+ if(master.name==='Ultron Infinity'&&p===1)supplies.push('Guarda los Ultron Sentries no usados para los Master Strikes de Ultron.');
+ if(master.hero)notes.push(master.hero+' se incluye obligatoriamente entre los héroes.');
+ const getSet=name=>[...HEROES,...VILLAINS,...HENCHMEN,...MASTERS].find(x=>x.name===name)?.set;
+ return {version:2,p,sets,master,scheme,epic,heroes,villains,henchmen,extraHeroes,extraMasters,extraHenchmen,supplies,bystanders:cfg.b,twists:cfg.twists,strikes:5,notes,origins:Object.fromEntries([...heroes,...villains,...henchmen,...extraHeroes.map(x=>x.name),...extraMasters.map(x=>x.name),...extraHenchmen.map(x=>x.name)].map(x=>[x,getSet(x)]))};
+}
+if(typeof module!=='undefined')module.exports={generate,catalog,settingsFor,SETS,HEROES,VILLAINS,HENCHMEN,MASTERS,SCHEMES,RISE};
+</script><script>const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let current=null;
+const check=t=>'<li><label><input type="checkbox"> <span>'+t+'</span></label></li>';
+const activeSets=()=>Object.keys(SETS).filter(s=>$('set-'+s).checked);
+function refreshOptions(){
+ const c=catalog(activeSets()),oldMaster=$('master').value,oldScheme=$('scheme').value;
+ if(!activeSets().includes('wi'))$('mode').value='normal';
+ $('mode').options[1].disabled=!activeSets().includes('wi');
+ $('master').replaceChildren(new Option('Al azar',''));
+ for(const [set,label] of Object.entries(SETS)){const group=document.createElement('optgroup');group.label=label;for(const m of c.masters.filter(m=>m.set===set&&($('mode').value!=='epic'||m.epic)))group.append(new Option(m.name,m.name));if(group.children.length)$('master').append(group);}
+ if([...$('master').options].some(o=>o.value===oldMaster))$('master').value=oldMaster;
+ $('scheme').replaceChildren(new Option('Al azar',''));
+ for(const [set,label] of Object.entries(SETS)){const group=document.createElement('optgroup');group.label=label;for(const s of c.schemes.filter(s=>s.set===set)){let o=new Option(s.name,s.id);o.disabled=!!s.unavailable;group.append(o);}if(group.children.length)$('scheme').append(group);}
+ if([...$('scheme').options].some(o=>o.value===oldScheme&&!o.disabled))$('scheme').value=oldScheme;
+ $('collection-count').textContent=c.heroes.length+' héroes · '+c.masters.length+' jefes · '+c.schemes.length+' planes · '+c.villains.length+' grupos de villanos · '+c.henchmen.length+' grupos de esbirros';
+}
+function origin(r,n){return esc(SETS[r.origins[n]]||'');}
+function render(r){
+ current=r;$('copy').disabled=false;$('print').disabled=false;
+ const hc=r.p===1?'2 al mazo + 2 a la ciudad':'10 cartas',extras=[
+ ...r.extraHeroes.map(x=>check('<b>'+esc(x.name)+'</b> · '+x.count+' cartas al mazo de villanos <small>'+origin(r,x.name)+'</small>')),
+ ...r.extraMasters.map((x,i)=>check('<b>'+esc(x.name)+'</b> · '+x.tactics+' tácticas'+(r.scheme.id==='tyrants'?' al mazo de villanos':' en reserva'+(r.scheme.id==='secretwars'?' · Twist '+(i+1):''))+' <small>'+origin(r,x.name)+'</small>')),
+ ...r.extraHenchmen.map(x=>check('<b>'+esc(x.name)+'</b> · '+x.count+' cartas → '+esc(x.destination)+' <small>'+origin(r,x.name)+'</small>')),
+ ...r.supplies.map(x=>check(esc(x)))];
+ $('result').innerHTML=`<div class="top-grid"><article class="card boss"><div class="kicker">LA AMENAZA · ${esc(SETS[r.master.set])}</div><h3>${esc(r.master.name)}</h3><span class="tag">${r.epic?'VERSIÓN ÉPICA':'VERSIÓN NORMAL'} · ${r.p} ${r.p===1?'JUGADOR':'JUGADORES'}</span><p>Prepara el jefe y sus 4 tácticas boca abajo y barajadas.</p></article><article class="card scheme"><div class="kicker">EL PLAN · ${esc(SETS[r.scheme.set])}</div><h3>${esc(r.scheme.name)}</h3><span class="tag">${r.twists} SCHEME TWISTS</span><p>${r.scheme.id==='annihilation'?'Incluye la sustitución de esbirros elegida por Jaco.':'Las cantidades y los componentes extra de este plan están incluidos abajo.'}</p></article></div>
+ <section class="hero-section"><div class="section-line"><h3>Tu equipo de héroes</h3><span>${r.heroes.length} héroes · ${r.heroes.length*14} cartas</span></div><div class="heroes">${r.heroes.map(x=>`<div class="hero"><i>${esc(x.split(' ').map(a=>a[0]).slice(0,2).join(''))}</i><div><b>${esc(x)}</b><small>${origin(r,x)} · 14 cartas</small></div></div>`).join('')}</div></section>
+ <div class="lower"><article class="card"><div class="kicker">MAZO DE VILLANOS</div><h3>Villanos y esbirros</h3><ul class="checklist">${r.villains.map(x=>check(esc(x)+' <span class="tag">· 8 cartas</span><small>'+origin(r,x)+'</small>')).join('')}${r.henchmen.map(x=>check(esc(x)+' <span class="tag">· '+hc+'</span><small>'+origin(r,x)+'</small>')).join('')}</ul><div class="stats">${[[r.bystanders,'Bystanders'],[5,'Master Strikes'],[r.twists,'Scheme Twists']].map(([n,t])=>`<div class="stat"><strong>${n}</strong><span>${t}</span></div>`).join('')}</div>${extras.length?'<h3 class="extra-title">Componentes adicionales</h3><ul class="checklist">'+extras.join('')+'</ul>':''}</article>
+ <article class="card"><div class="kicker">ANTES DEL PRIMER TURNO</div><h3>Listos para jugar</h3><ul class="checklist">${check('Cada jugador: 8 agentes + 4 soldados S.H.I.E.L.D. Baraja y roba 6 cartas.')}${check('Baraja los '+r.heroes.length+' héroes y revela 5 cartas en el HQ.')}${check('Prepara las reservas de oficiales, heridas y espectadores.')}${check('Lee el plan y las habilidades del mastermind antes de comenzar.')}</ul><ul class="notes">${r.notes.map(n=>'<li>'+esc(n)+'</li>').join('')}</ul></article></div>`;
+ try{localStorage.setItem('legendary-collection-v2',JSON.stringify({sets:activeSets(),p:r.p,mode:$('mode').value,master:$('master').value,scheme:$('scheme').value,result:r}));}catch{}
+}
+function run(){
+ try{render(generate(+$('players').value,$('master').value,$('scheme').value,$('mode').value==='epic',activeSets()));$('status').textContent='Partida generada con '+activeSets().map(s=>SETS[s]).join(' + ')+'.';}
+ catch(e){current=null;$('result').replaceChildren();$('status').textContent=e.message;$('copy').disabled=true;$('print').disabled=true;}
+}
+$('generate').onclick=run;
+for(const id of ['players','master','scheme'])$(id).onchange=run;
+$('mode').onchange=()=>{refreshOptions();run();};
+for(const s of Object.keys(SETS))$('set-'+s).onchange=()=>{refreshOptions();run();};
+$('print').onclick=()=>window.print();
+$('copy').onclick=async()=>{
+ if(!current)return;const r=current;
+ const text=['LEGENDARY · '+r.p+' jugadores','Cajas: '+r.sets.map(s=>SETS[s]).join(', '),'Mastermind: '+r.master.name+' ('+(r.epic?'épico':'normal')+')','Plan: '+r.scheme.name,'Héroes: '+r.heroes.join(', '),'Villanos (8 cartas/grupo): '+r.villains.join(', '),'Esbirros ('+(r.p===1?'2 al mazo + 2 a la ciudad':'10 cartas/grupo')+'): '+r.henchmen.join(', '),r.bystanders+' Bystanders · 5 Master Strikes · '+r.twists+' Scheme Twists',...r.extraHeroes.map(x=>'Héroe extra: '+x.name+' · '+x.count+' cartas al mazo de villanos'),...r.extraMasters.map((x,i)=>'Jefe extra '+(i+1)+': '+x.name+' · '+x.tactics+' tácticas'+(r.scheme.id==='tyrants'?' al mazo de villanos':' en reserva')),...r.extraHenchmen.map(x=>'Esbirros extra: '+x.name+' · '+x.count+' cartas → '+x.destination),...r.supplies,...r.notes].join('\n');
+ try{await navigator.clipboard.writeText(text);$('status').textContent='Preparación copiada.';}
+ catch{$('copy-fallback').hidden=false;$('copy-text').value=text;$('copy-text').focus();$('copy-text').select();$('status').textContent='Selecciona y copia el texto mostrado abajo.';}
+};
+let saved;try{saved=JSON.parse(localStorage.getItem('legendary-collection-v2'));}catch{}
+if(saved&&Array.isArray(saved.sets)&&saved.sets.every(s=>Object.hasOwn(SETS,s))){for(const s of Object.keys(SETS))$('set-'+s).checked=saved.sets.includes(s);$('players').value=[1,2,3,4,5].includes(saved.p)?saved.p:4;$('mode').value=saved.mode==='epic'?'epic':'normal';}
+refreshOptions();
+if(saved){if([...$('master').options].some(o=>o.value===saved.master))$('master').value=saved.master;if([...$('scheme').options].some(o=>o.value===saved.scheme))$('scheme').value=saved.scheme;}
+run();
+</script></body></html>
