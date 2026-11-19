@@ -1,5 +1,5 @@
 (() => {
-  const APP_VERSION = '1.2.0';
+  const APP_VERSION = '1.2.1';
   let pendingUpdate = null;
   let updating = false;
 
@@ -43,8 +43,6 @@
       if (registration) await registration.update();
       if (registration?.waiting && navigator.serviceWorker.controller) {
         pendingUpdate = registration.waiting;
-        showUpdate();
-        return 'available';
       }
       const response = await fetch('./version.json?check=' + Date.now(), { cache: 'no-store' });
       if (!response.ok) return 'error';
@@ -53,7 +51,11 @@
         showUpdate();
         return 'available';
       }
-      return version === APP_VERSION ? 'current' : 'error';
+      if (version === APP_VERSION) {
+        updateBar.hidden = true;
+        return 'current';
+      }
+      return 'error';
     } catch (error) {
       // Sin conexión o fallo temporal: la aplicación sigue funcionando normalmente.
       console.info('La comprobación de actualizaciones no está disponible.', error);
@@ -91,10 +93,15 @@
       const worker = registration?.waiting || pendingUpdate;
       if (worker) {
         let refreshed = false;
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
+        const refresh = () => {
           if (!refreshed) { refreshed = true; window.location.reload(); }
+        };
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          refresh();
         }, { once: true });
         worker.postMessage({ type: 'SKIP_WAITING' });
+        // Algunos navegadores no notifican controllerchange a tiempo.
+        window.setTimeout(refresh, 3000);
         return;
       }
       window.location.reload();
@@ -112,14 +119,13 @@
         const registration = await navigator.serviceWorker.register('./service-worker.js');
         if (registration.waiting && navigator.serviceWorker.controller) {
           pendingUpdate = registration.waiting;
-          showUpdate();
         }
         registration.addEventListener('updatefound', () => {
           const installing = registration.installing;
           installing?.addEventListener('statechange', () => {
             if (installing.state === 'installed' && navigator.serviceWorker.controller) {
               pendingUpdate = installing;
-              showUpdate();
+              checkForUpdates(registration);
             }
           });
         });
