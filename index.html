@@ -211,4 +211,4 @@ $('dictionary-toggle').onclick=()=>{const body=$('dictionary-body'),opening=body
 $('dictionary-search').addEventListener('input',renderDictionary);
 $('dictionary-set').addEventListener('change',renderDictionary);
 $('go-dictionary').onclick=()=>{if($('dictionary-body').hidden)$('dictionary-toggle').click();$('diccionario').scrollIntoView({behavior:'smooth',block:'start'});$('dictionary-search').focus({preventScroll:true});};
-</script></body></html>
+</script><script src="./pwa-setup.js" defer></script></body></html>
