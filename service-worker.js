@@ -1,4 +1,4 @@
-const CACHE_NAME = 'legendary-randomizer-v4';
+const CACHE_NAME = 'legendary-randomizer-v5';
 const APP_FILES = ['./', './index.html', './pwa-setup.js', './version.json', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', event => {
