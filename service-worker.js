@@ -1,4 +1,4 @@
-const CACHE_NAME = 'legendary-randomizer-v3';
+const CACHE_NAME = 'legendary-randomizer-v4';
 const APP_FILES = ['./', './index.html', './pwa-setup.js', './version.json', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', event => {
@@ -18,6 +18,8 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET' || new URL(event.request.url).origin !== self.location.origin) return;
+  // Las consultas de versión llevan un parámetro cambiante y no deben guardarse en caché.
+  if (new URL(event.request.url).searchParams.has('check')) return;
   event.respondWith(
     fetch(event.request).then(response => {
       if (response.ok) {
