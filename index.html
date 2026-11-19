@@ -14,12 +14,15 @@
 <div class="dictionary-heading"><div><p class="eyebrow">CONSULTA DURANTE LA PARTIDA</p><h2 id="dictionary-title">📖 Diccionario de habilidades</h2><p class="subtitle">Nombres de habilidades en inglés y explicaciones y ejemplos en español.</p></div><button type="button" id="dictionary-toggle" aria-expanded="false" aria-controls="dictionary-body">Abrir diccionario</button></div>
 <div id="dictionary-body" hidden><div class="dictionary-tools"><label for="dictionary-search">Buscar habilidad<input id="dictionary-search" type="search" placeholder="Ej.: Teleport, Soulbind, Patrol…" autocomplete="off"></label><label for="dictionary-set">Expansión<select id="dictionary-set"><option value="all">Todas las expansiones</option><option value="wi">What If…?</option><option value="sw1">Secret Wars Vol. 1</option><option value="sw2">Secret Wars Vol. 2</option></select></label></div><p id="dictionary-count" class="subtitle" role="status"></p><div id="dictionary-list" class="dictionary-list"></div></div>
 </section>
+<dialog id="keyword-dialog" aria-labelledby="keyword-dialog-title"><div class="keyword-dialog-top"><p class="eyebrow">CONSULTA RÁPIDA DE REGLAS</p><button type="button" id="keyword-dialog-close" aria-label="Cerrar explicación">✕</button></div><h2 id="keyword-dialog-title"></h2><p id="keyword-dialog-sets" class="tag"></p><p id="keyword-dialog-rule"></p><div class="keyword-dialog-example"><strong>Ejemplo práctico</strong><p id="keyword-dialog-example"></p></div><p id="keyword-dialog-source" class="dictionary-reference"></p><button type="button" id="keyword-dialog-done" class="primary">Volver a la partida</button></dialog>
 <style>
 .dictionary{margin:36px 0 20px;padding:24px;background:var(--panel);border:1px solid var(--line);border-radius:15px;border-top:3px solid var(--orange)}
 .dictionary-heading{display:flex;align-items:center;justify-content:space-between;gap:20px}.dictionary-heading h2{font:700 32px 'Barlow Condensed',sans-serif}.dictionary-heading .subtitle{max-width:720px;margin-bottom:0}.dictionary-heading button{white-space:nowrap;border-color:var(--orange);color:var(--orange)}
 .dictionary-tools{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin:22px 0 10px}.dictionary-tools label{margin:0}.dictionary-tools input{width:100%;margin-top:8px;background:#11121f;color:#fff;border:1px solid #454255;padding:13px;border-radius:7px;font:inherit}.dictionary-tools select{margin-top:8px}.dictionary-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.dictionary-entry{background:#11121f;border:1px solid var(--line);border-radius:9px;padding:15px 18px}.dictionary-entry summary{font-weight:700;color:#fff;line-height:1.4}.dictionary-entry[open]{border-color:#9d788f}.dictionary-entry p{line-height:1.6;color:#ddd;font-size:14px}.dictionary-entry .example{color:#f4cbad}.dictionary-entry small{display:block;color:var(--muted);margin-top:8px}.keyword-link{border:0;padding:0;min-height:0;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;color:var(--orange);font:inherit;background:none}.keyword-link:hover{background:none;color:#ffbd9f}
+.quick-keywords{margin-top:19px;padding-top:15px;border-top:1px solid var(--line)}.quick-keywords h3{font-size:16px;margin:0 0 10px}.quick-keywords p{color:var(--muted);font-size:12px;margin:0 0 12px}.keyword-chips{display:flex;flex-wrap:wrap;gap:8px}.keyword-chips .keyword-link{padding:9px 11px;border:1px solid #835d78;border-radius:8px;text-decoration:none;background:#302539;color:#ffd0ba;min-height:40px;font-size:13px}.keyword-chips .keyword-link:hover{background:#493149}
+#keyword-dialog{max-width:min(560px,calc(100% - 28px));max-height:min(85vh,720px);overflow:auto;width:100%;padding:26px;border:1px solid #8e6486;border-radius:15px;background:#1a1b2c;color:#f5f0ed;box-shadow:0 20px 70px #000b;font-family:'DM Sans',sans-serif}#keyword-dialog::backdrop{background:#05050cd9}#keyword-dialog h2{font:700 34px 'Barlow Condensed',sans-serif;margin:5px 0 8px}#keyword-dialog p{line-height:1.6}.keyword-dialog-top{display:flex;justify-content:space-between;align-items:start;gap:12px}.keyword-dialog-top button{padding:6px 12px;min-height:36px}.keyword-dialog-example{padding:14px;border-left:3px solid var(--orange);background:#292334;border-radius:6px}.keyword-dialog-example p{margin-bottom:0}.dictionary-reference{font-size:12px;color:var(--muted)}#keyword-dialog-done{width:100%;margin-top:8px}
 @media(max-width:650px){.dictionary{padding:18px}.dictionary-heading{display:block}.dictionary-heading button{margin-top:15px;width:100%}.dictionary-tools,.dictionary-list{grid-template-columns:1fr}}
-@media print{.dictionary{display:none}}
+@media print{.dictionary,#keyword-dialog,.quick-keywords{display:none}}
 </style>
 </main><footer>Hecho para noches de Legendary. <span>Herramienta de aficionado · Sin afiliación con Marvel ni Upper Deck.</span></footer><script>const SETS={wi:'What If…?',sw1:'Secret Wars Vol. 1',sw2:'Secret Wars Vol. 2'};
 const records=(set,names)=>names.map(name=>({name,set}));
@@ -150,11 +153,11 @@ function render(r){
  ...r.extraHeroes.map(x=>check('<b>'+esc(x.name)+'</b> · '+x.count+' cartas al mazo de villanos <small>'+origin(r,x.name)+'</small>')),
  ...r.extraMasters.map((x,i)=>check('<b>'+esc(x.name)+'</b> · '+x.tactics+' tácticas'+(r.scheme.id==='tyrants'?' al mazo de villanos':' en reserva'+(r.scheme.id==='secretwars'?' · Twist '+(i+1):''))+' <small>'+origin(r,x.name)+'</small>')),
  ...r.extraHenchmen.map(x=>check('<b>'+esc(x.name)+'</b> · '+x.count+' cartas → '+esc(x.destination)+' <small>'+origin(r,x.name)+'</small>')),
- ...r.supplies.map(x=>check(esc(x)))];
+ ...r.supplies.map(x=>check(linkKeywordsInText(x)))];
  $('result').innerHTML=`<div class="top-grid"><article class="card boss"><div class="kicker">LA AMENAZA · ${esc(SETS[r.master.set])}</div><h3>${esc(r.master.name)}</h3><span class="tag">${r.epic?'VERSIÓN ÉPICA':'VERSIÓN NORMAL'} · ${r.p} ${r.p===1?'JUGADOR':'JUGADORES'}</span><p>Prepara el jefe y sus 4 tácticas boca abajo y barajadas.</p></article><article class="card scheme"><div class="kicker">EL PLAN · ${esc(SETS[r.scheme.set])}</div><h3>${esc(r.scheme.name)}</h3><span class="tag">${r.twists} SCHEME TWISTS</span><p>${r.scheme.id==='annihilation'?'Incluye la sustitución de esbirros elegida por Jaco.':'Las cantidades y los componentes extra de este plan están incluidos abajo.'}</p></article></div>
  <section class="hero-section"><div class="section-line"><h3>Tu equipo de héroes</h3><span>${r.heroes.length} héroes · ${r.heroes.length*14} cartas</span></div><div class="heroes">${r.heroes.map(x=>`<div class="hero"><i>${esc(x.split(' ').map(a=>a[0]).slice(0,2).join(''))}</i><div><b>${esc(x)}</b><small>${origin(r,x)} · 14 cartas</small></div></div>`).join('')}</div></section>
  <div class="lower"><article class="card"><div class="kicker">MAZO DE VILLANOS</div><h3>Villanos y esbirros</h3><ul class="checklist">${r.villains.map(x=>check(esc(x)+' <span class="tag">· 8 cartas</span><small>'+origin(r,x)+'</small>')).join('')}${r.henchmen.map(x=>check(esc(x)+' <span class="tag">· '+hc+'</span><small>'+origin(r,x)+'</small>')).join('')}</ul><div class="stats">${[[r.bystanders,'Bystanders'],[5,'Master Strikes'],[r.twists,'Scheme Twists']].map(([n,t])=>`<div class="stat"><strong>${n}</strong><span>${t}</span></div>`).join('')}</div>${extras.length?'<h3 class="extra-title">Componentes adicionales</h3><ul class="checklist">'+extras.join('')+'</ul>':''}</article>
- <article class="card"><div class="kicker">ANTES DEL PRIMER TURNO</div><h3>Listos para jugar</h3><ul class="checklist">${check('Cada jugador: 8 agentes + 4 soldados S.H.I.E.L.D. Baraja y roba 6 cartas.')}${check('Baraja los '+r.heroes.length+' héroes y revela 5 cartas en el HQ.')}${check('Prepara las reservas de oficiales, heridas y espectadores.')}${check('Lee el plan y las habilidades del mastermind antes de comenzar.')}</ul><ul class="notes">${r.notes.map(n=>'<li>'+esc(n)+'</li>').join('')}</ul></article></div>`;
+ <article class="card"><div class="kicker">ANTES DEL PRIMER TURNO</div><h3>Listos para jugar</h3><ul class="checklist">${check('Cada jugador: 8 agentes + 4 soldados S.H.I.E.L.D. Baraja y roba 6 cartas.')}${check('Baraja los '+r.heroes.length+' héroes y revela 5 cartas en el HQ.')}${check('Prepara las reservas de oficiales, heridas y espectadores.')}${check('Lee el plan y las habilidades del mastermind antes de comenzar.')}</ul><ul class="notes">${r.notes.map(n=>'<li>'+linkKeywordsInText(n)+'</li>').join('')}</ul>${quickKeywordHTML(r)}</article></div>`;
  try{localStorage.setItem('legendary-collection-v2',JSON.stringify({sets:activeSets(),p:r.p,mode:$('mode').value,master:$('master').value,scheme:$('scheme').value,result:r}));}catch{}
 }
 function run(){
@@ -176,7 +179,6 @@ let saved;try{saved=JSON.parse(localStorage.getItem('legendary-collection-v2'));
 if(saved&&Array.isArray(saved.sets)&&saved.sets.every(s=>Object.hasOwn(SETS,s))){for(const s of Object.keys(SETS))$('set-'+s).checked=saved.sets.includes(s);$('players').value=[1,2,3,4,5].includes(saved.p)?saved.p:4;$('mode').value=saved.mode==='epic'?'epic':'normal';}
 refreshOptions();
 if(saved){if([...$('master').options].some(o=>o.value===saved.master))$('master').value=saved.master;if([...$('scheme').options].some(o=>o.value===saved.scheme))$('scheme').value=saved.scheme;}
-run();
 // Diccionario de reglas: denominaciones de habilidades originales; explicaciones propias en español.
 const KEYWORDS=[
 {name:'What If...?',sets:['wi'],rule:'Elige una clase de héroe o el nombre de un héroe. Revela la carta superior de tu mazo; puedes devolverla arriba o descartarla. Si coincide con la clase o el nombre elegido, aplica el efecto indicado después de What If...?. No puedes elegir nombres de héroes iniciales grises de coste 0.',example:'Eliges Captain Carter. Si revelas una carta cuyo nombre de héroe es Captain Carter, activas el efecto; si no coincide, todavía puedes descartar esa carta.'},
@@ -200,15 +202,52 @@ const KEYWORDS=[
 {name:'A Player is the Mastermind',sets:['sw1','sw2'],rule:'Variante opcional competitiva en la que un jugador encarna al mastermind y usa cartas Ambition contra el resto. Su turno y las reglas de preparación son distintos; el randomizador actual genera partidas cooperativas y no configura esta variante.',example:'En esta variante el jugador mastermind revela una carta Ambition en lugar de revelar una carta del mazo de villanos al comenzar su turno.'},
 {name:'Ambition',sets:['sw1','sw2'],rule:'En la variante A Player is the Mastermind, el jugador mastermind mantiene una fila de hasta cuatro cartas Ambition. En su turno añade una carta a la fila y puede pagar el ataque indicado para resolver su efecto; luego la descarta en la pila especial de Ambition.',example:'Si la fila ya contiene cuatro cartas, se descarta una de ellas o la nueva antes de continuar.'}
 ];
+const KEYWORD_INDEX = new Map(KEYWORDS.map((entry,index)=>[entry.name.toLocaleLowerCase('es'),index]));
+const KEYWORD_PATTERN = new RegExp('('+KEYWORDS.map(k=>k.name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).sort((a,b)=>b.length-a.length).join('|')+')','gi');
+const RULE_SOURCES = {wi:'Reglamento What If…?',sw1:'Reglas Secret Wars Vol. 1',sw2:'Reglas Secret Wars Vol. 2'};
+function keywordButton(index,label,chip=false){
+ return '<button type="button" class="keyword-link" data-keyword="'+index+'" aria-label="Consultar '+esc(label)+'">'+esc(label)+'</button>';
+}
+function linkKeywordsInText(text){
+ return String(text).split(KEYWORD_PATTERN).map(part=>{
+   const index=KEYWORD_INDEX.get(part.toLocaleLowerCase('es'));
+   return index===undefined?esc(part):keywordButton(index,part);
+ }).join('');
+}
+function quickKeywordHTML(r){
+ const priorities=['What If...?','Soulbind','Liberate','Rise of the Living Dead','Teleport','Bribe','Sidekicks','Spectrum','Patrol','Wall-Crawl','Fateful Resurrection','Charge'];
+ const selected=priorities.map(name=>KEYWORDS.findIndex(k=>k.name===name)).filter(i=>i>=0&&KEYWORDS[i].sets.some(s=>r.sets.includes(s))).slice(0,8);
+ return '<div class="quick-keywords"><h3>📖 Consultas rápidas</h3><p>Estas habilidades pertenecen a las expansiones activadas; no significa que todas estén en las cartas sorteadas.</p><div class="keyword-chips">'+selected.map(i=>keywordButton(i,KEYWORDS[i].name,true)).join('')+'</div></div>';
+}
+function openKeyword(index){
+ const keyword=KEYWORDS[index],dialog=$('keyword-dialog');
+ if(!keyword||!dialog)return;
+ $('keyword-dialog-title').textContent=keyword.name;
+ $('keyword-dialog-sets').textContent=keyword.sets.map(s=>SETS[s]).join(' · ');
+ $('keyword-dialog-rule').textContent=keyword.rule;
+ $('keyword-dialog-example').textContent=keyword.example;
+ $('keyword-dialog-source').textContent='Fuentes: '+keyword.sets.map(s=>RULE_SOURCES[s]).join('; ')+'. Ante una excepción específica, prevalece el texto de la carta.';
+ if(!dialog.open)dialog.showModal();
+}
+document.addEventListener('click',event=>{
+ const button=event.target.closest('button[data-keyword]');
+ if(button)openKeyword(Number(button.dataset.keyword));
+});
+$('keyword-dialog-close').onclick=()=> $('keyword-dialog').close();
+$('keyword-dialog-done').onclick=()=> $('keyword-dialog').close();
+$('keyword-dialog').addEventListener('click',event=>{
+ if(event.target===$('keyword-dialog'))$('keyword-dialog').close();
+});
 function renderDictionary(){
  const query=$('dictionary-search').value.trim().toLocaleLowerCase('es');
  const set=$('dictionary-set').value;
  const visible=KEYWORDS.filter(k=>(set==='all'||k.sets.includes(set))&&(!query||(k.name+' '+k.rule+' '+k.example).toLocaleLowerCase('es').includes(query)));
  $('dictionary-count').textContent=visible.length+' habilidades y mecánicas encontradas';
- $('dictionary-list').innerHTML=visible.map(k=>'<details class="dictionary-entry" id="kw-'+KEYWORDS.indexOf(k)+'"><summary>'+esc(k.name)+'</summary><small>'+k.sets.map(s=>esc(SETS[s])).join(' · ')+'</small><p>'+esc(k.rule)+'</p><p class="example"><b>Ejemplo:</b> '+esc(k.example)+'</p></details>').join('')||'<p>No hay coincidencias. Prueba otra palabra o expansión.</p>';
+ $('dictionary-list').innerHTML=visible.map(k=>'<details class="dictionary-entry" id="kw-'+KEYWORDS.indexOf(k)+'"><summary>'+esc(k.name)+'</summary><small>'+k.sets.map(s=>esc(SETS[s])).join(' · ')+'</small><p>'+esc(k.rule)+'</p><p class="example"><b>Ejemplo:</b> '+esc(k.example)+'</p><p class="dictionary-reference">Fuentes: '+k.sets.map(s=>esc(RULE_SOURCES[s])).join('; ')+'.</p></details>').join('')||'<p>No hay coincidencias. Prueba otra palabra o expansión.</p>';
 }
 $('dictionary-toggle').onclick=()=>{const body=$('dictionary-body'),opening=body.hidden;body.hidden=!opening;$('dictionary-toggle').setAttribute('aria-expanded',String(opening));$('dictionary-toggle').textContent=opening?'Cerrar diccionario':'Abrir diccionario';if(opening)renderDictionary();};
 $('dictionary-search').addEventListener('input',renderDictionary);
 $('dictionary-set').addEventListener('change',renderDictionary);
 $('go-dictionary').onclick=()=>{if($('dictionary-body').hidden)$('dictionary-toggle').click();$('diccionario').scrollIntoView({behavior:'smooth',block:'start'});$('dictionary-search').focus({preventScroll:true});};
+run();
 </script><script src="./pwa-setup.js" defer></script></body></html>
