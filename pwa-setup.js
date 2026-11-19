@@ -1,7 +1,18 @@
 (() => {
-  const APP_VERSION = '1.5.0';
+  const APP_VERSION = '1.6.0';
   let pendingUpdate = null;
   let updating = false;
+  const bust = () => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('check', String(Date.now()));
+    // La URL con ?check evita la interceptación por un service worker antiguo.
+    window.location.replace(url.href);
+  };
+  if (new URL(window.location.href).searchParams.has('check')) {
+    const clean = new URL(window.location.href);
+    clean.searchParams.delete('check');
+    window.history.replaceState(null, '', clean.href);
+  }
 
   const manifest = document.createElement('link');
   manifest.rel = 'manifest';
@@ -94,17 +105,18 @@
       if (worker) {
         let refreshed = false;
         const refresh = () => {
-          if (!refreshed) { refreshed = true; window.location.reload(); }
+          if (!refreshed) { refreshed = true; bust(); }
         };
         navigator.serviceWorker.addEventListener('controllerchange', () => {
           refresh();
         }, { once: true });
         worker.postMessage({ type: 'SKIP_WAITING' });
         // Algunos navegadores no notifican controllerchange a tiempo.
-        window.setTimeout(refresh, 3000);
+        window.setTimeout(refresh, 2500);
         return;
       }
-      window.location.reload();
+      // Si no hay worker esperando, forzar igualmente una navegación fresca.
+      bust();
     } catch (error) {
       updating = false;
       button.disabled = false;
@@ -116,7 +128,7 @@
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
       try {
-        const registration = await navigator.serviceWorker.register('./service-worker.js');
+        const registration = await navigator.serviceWorker.register('./service-worker.js', { updateViaCache: 'none' });
         if (registration.waiting && navigator.serviceWorker.controller) {
           pendingUpdate = registration.waiting;
         }
