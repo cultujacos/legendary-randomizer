@@ -1,5 +1,5 @@
 (() => {
-  const APP_VERSION = '1.6.1';
+  const APP_VERSION = '1.7.0';
   let pendingUpdate = null;
   let updating = false;
   const bust = () => {

@@ -13,12 +13,13 @@
 <div><label for="mode">Dificultad del jefe</label><select id="mode"><option value="normal">Normal</option><option value="epic">Épica</option></select></div></div>
 <div id="manual-fields" hidden><p class="note">Escribe el nombre y los Scheme Twists indicados por tu carta. Los efectos especiales del plan se aplican leyendo esa carta.</p><div class="controls"><div><label for="manual-name">Nombre del plan</label><input id="manual-name" placeholder="Nombre exacto de la carta"></div><div><label for="manual-twists">Scheme Twists</label><input id="manual-twists" type="number" min="0" max="30" placeholder="Número del plan"></div></div></div>
 <div class="actions"><button class="primary" id="generate">Generar partida ✦</button><button id="copy">Copiar preparación</button><button id="print">Imprimir</button></div><p id="status" role="status"></p></section>
-<section id="result" aria-live="polite"></section>
+<div id="dc-history-anchor"></div><section id="result" aria-live="polite"></section>
 <section class="panel" id="dc-dictionary" aria-labelledby="dc-dictionary-title"><p class="eyebrow">Consulta durante la partida</p><h2 id="dc-dictionary-title">📖 Diccionario de DC</h2><p class="muted">Reglas oficiales explicadas en español con ejemplos. Los términos se mantienen en inglés para encontrarlos en tus cartas.</p>
 <div class="dictionary-tools"><div><label for="dc-dictionary-search">Buscar habilidad o regla</label><input id="dc-dictionary-search" type="search" placeholder="Ej.: Hope, Transform, Sidekick…" autocomplete="off"></div><button id="dc-dictionary-toggle" type="button" aria-expanded="false">Abrir diccionario</button></div>
 <div id="dc-dictionary-body" hidden><div class="dictionary-chips" id="dc-dictionary-chips"></div><p id="dc-dictionary-count" role="status"></p><div id="dc-dictionary-list" class="dictionary-grid"></div></div></section>
 <details class="panel"><summary>Reglas, catálogo y alcance de DC</summary><p>El juego base contiene 14 héroes, 5 Masterminds (con versión épica), 7 grupos de villanos y 4 grupos de esbirros. Los planes del sorteo automático son los que tienen nombre y cantidad de giros contrastados. Para cualquier otro plan de tu caja, utiliza «Introducir otro plan» y copia los datos de la carta.</p><p>El generador aplica los grupos y cantidades generales del reglamento. Las instrucciones particulares de cada Scheme y el grupo «Always Leads» de cada jefe se deben comprobar en las cartas físicas; no se sustituyen por reglas inventadas.</p><p><a href="https://upperdeck.com/wp-content/uploads/2026/08/Legendary-DC-Core-Rulebook.pdf" target="_blank" rel="noopener">Reglamento oficial de Legendary DC</a> · <a href="https://upperdeck.com/legendary-dc/" target="_blank" rel="noopener">Información oficial del juego</a></p></details>
 </main><footer>Herramienta independiente de aficionados. Sin afiliación con DC ni Upper Deck.</footer>
+<script src="./no-repeat.js"></script>
 <script>
 const HEROES=['Aquaman','Batman','Black Canary','Cyborg','The Flash (Barry Allen)','Green Arrow','Green Lantern (John Stewart)','Hawkgirl','Martian Manhunter','Nightwing','Starfire','Superman','Wonder Woman','Zatanna'];
 const MASTERS=['Captain Cold','Circe','Deathstroke','Lex Luthor','The Joker'];
@@ -29,15 +30,56 @@ const $=id=>document.getElementById(id);const pick=(a,n)=>{const b=[...a];for(le
 const escapeHTML=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const counts={1:{heroes:3,villains:1,hench:1,bystanders:1},2:{heroes:5,villains:2,hench:1,bystanders:2},3:{heroes:5,villains:3,hench:1,bystanders:8},4:{heroes:5,villains:4,hench:2,bystanders:8},5:{heroes:6,villains:5,hench:2,bystanders:16}};
 let current=null;
+const dcHistory=LegendaryNoRepeat.create('dc',()=>({masters:MASTERS,heroes:HEROES,villains:VILLAINS,henchmen:HENCHMEN,schemes:SCHEMES.map(x=>x.name)}));
+dcHistory.mount($('dc-history-anchor'));
 function chooseOptions(){MASTERS.forEach(m=>$('master').add(new Option(m,m)));SCHEMES.forEach((s,i)=>$('scheme').add(new Option(s.name,String(i))));$('scheme').add(new Option('Introducir otro plan de mi caja','manual'));}
 function save(){try{localStorage.setItem('legendary-dc-settings-v1',JSON.stringify({players:$('players').value,master:$('master').value,scheme:$('scheme').value,mode:$('mode').value,manualName:$('manual-name').value,manualTwists:$('manual-twists').value}));}catch{}}
 function restore(){try{const p=JSON.parse(localStorage.getItem('legendary-dc-settings-v1'));if(!p)return;for(const id of ['players','master','scheme','mode'])if([...$(id).options].some(o=>o.value===p[id]))$(id).value=p[id];$('manual-name').value=p.manualName||'';$('manual-twists').value=p.manualTwists??'';}catch{}}
 function lineList(items){return '<ul>'+items.map(t=>'<li><label><input type="checkbox"><span>'+escapeHTML(t)+'</span></label></li>').join('')+'</ul>';}
 function card(title,content){return '<article class="card"><h3>'+escapeHTML(title)+'</h3>'+content+'</article>';}
 function formatResult(r){const groupInfo=r.p===1?'2 cartas al mazo y 2 en la ciudad':'10 cartas de cada grupo';return `<div class="grid">${card('🦸 Héroes',lineList(r.heroes.map(x=>x+' · 14 cartas')))}${card('🎭 Mastermind y plan','<h3>'+escapeHTML(r.master)+(r.epic?' · Épico':'')+'</h3><p>'+escapeHTML(r.scheme.name)+'</p><p class="pill">'+r.scheme.twists+' Scheme Twists</p>')}${card('👹 Villanos y esbirros',lineList([...r.villains.map(x=>x+' · 8 cartas'),...r.henchmen.map(x=>x+' · '+groupInfo)]))}${card('📦 Preparación',lineList([r.bystanders+' Bystanders','5 Master Strikes',r.scheme.twists+' Scheme Twists','Cada jugador: 8 Checkmate Pawns + 4 Checkmate Knights; robar 6 cartas','Preparar Supports, Daring Sidekicks y Wounds','Marcador de Hope/Fear listo','Comprobar y aplicar el grupo Always Leads del Mastermind','Leer y aplicar todas las instrucciones de Setup del Scheme',...(r.p>=4?['Ronda inicial: no revelar villano en el primer turno de cada jugador']:[])]))}</div><p class="note">Recuerda: algunas cartas de DC transforman héroes y algunos planes modifican la preparación. Este resumen no reemplaza sus instrucciones particulares.</p>`;}
-function generate(){save();const p=Number($('players').value),cfg=counts[p];let scheme;if($('scheme').value==='manual'){const name=$('manual-name').value.trim(),twists=Number($('manual-twists').value);if(!name||$('manual-twists').value===''||!Number.isInteger(twists)||twists<0||twists>30){$('status').textContent='Introduce el nombre del plan y un número válido de Scheme Twists.';return;}scheme={name,twists};}else scheme=$('scheme').value===''?pick(SCHEMES,1)[0]:SCHEMES[Number($('scheme').value)];const master=$('master').value||pick(MASTERS,1)[0];current={p,scheme,master,epic:$('mode').value==='epic',heroes:pick(HEROES,cfg.heroes),villains:pick(VILLAINS,cfg.villains),henchmen:pick(HENCHMEN,cfg.hench),bystanders:cfg.bystanders};$('result').innerHTML=formatResult(current);$('status').textContent='Partida de DC generada. Comprueba Always Leads y el Setup del plan.';}
+function generate(record=false){
+ current=null;
+ $('result').replaceChildren();
+ save();
+ const p=Number($('players').value),cfg=counts[p];
+ const eligible=(k,names)=>dcHistory.available(k,names);
+ const manual=$('scheme').value==='manual';
+ let scheme;
+ if(manual){
+   const name=$('manual-name').value.trim(),twists=Number($('manual-twists').value);
+   if(!name||$('manual-twists').value===''||!Number.isInteger(twists)||twists<0||twists>30){
+     $('status').textContent='Introduce un plan y un número válido de Scheme Twists.';return;
+   }
+   scheme={name,twists};
+ } else {
+   let plans=$('scheme').value===''?SCHEMES:[SCHEMES[Number($('scheme').value)]];
+   plans=plans.filter(x=>dcHistory.allow('schemes',x.name));
+   if(!plans.length){$('status').textContent='No quedan planes disponibles. Resetea Planes o desactiva su casilla.';return;}
+   scheme=pick(plans,1)[0];
+ }
+ if(!dcHistory.allow('schemes',scheme.name)){
+   $('status').textContent='Este plan ya se utilizó. Resetea Planes o desactiva su casilla.';return;
+ }
+ const masters=eligible('masters',$('master').value?[$('master').value]:MASTERS);
+ const heroes=eligible('heroes',HEROES);
+ const villains=eligible('villains',VILLAINS);
+ const henchmen=eligible('henchmen',HENCHMEN);
+ const missing=[];
+ if(!masters.length)missing.push('Masterminds');
+ if(heroes.length<cfg.heroes)missing.push('Héroes ('+heroes.length+'/'+cfg.heroes+')');
+ if(villains.length<cfg.villains)missing.push('Villanos ('+villains.length+'/'+cfg.villains+')');
+ if(henchmen.length<cfg.hench)missing.push('Esbirros ('+henchmen.length+'/'+cfg.hench+')');
+ if(missing.length){$('status').textContent='No hay suficientes cartas sin repetir: '+missing.join(', ')+'. Resetea esas categorías o desactiva sus casillas.';return;}
+ const next={p,scheme,master:pick(masters,1)[0],epic:$('mode').value==='epic',
+   heroes:pick(heroes,cfg.heroes),villains:pick(villains,cfg.villains),henchmen:pick(henchmen,cfg.hench),bystanders:cfg.bystanders};
+ current=next;
+ $('result').innerHTML=formatResult(current);
+ if(record)dcHistory.commit({masters:[next.master],heroes:next.heroes,villains:next.villains,henchmen:next.henchmen,schemes:[next.scheme.name]});
+ $('status').textContent=(record?'Partida registrada. ':'Vista previa (no registrada). ')+'Comprueba Always Leads y el Setup del plan.';
+}
 function printable(r){return ['LEGENDARY DC · '+r.p+' jugadores','Mastermind: '+r.master+(r.epic?' (épico)':''),'Scheme: '+r.scheme.name+' · '+r.scheme.twists+' Twists','Héroes: '+r.heroes.join(', '),'Villanos: '+r.villains.join(', '),'Esbirros: '+r.henchmen.join(', '),'Bystanders: '+r.bystanders,'Master Strikes: 5',r.p===1?'Solitario: 2 esbirros al mazo y 2 a la ciudad':'Esbirros: 10 cartas por grupo','Comprobar Always Leads del Mastermind y Setup del Scheme.','Preparar Hope/Fear, Supports, Sidekicks, Wounds y mazos iniciales.'].join('\n');}
-chooseOptions();restore();$('manual-fields').hidden=$('scheme').value!=='manual';$('scheme').addEventListener('change',()=>{$('manual-fields').hidden=$('scheme').value!=='manual';save();});for(const id of ['players','master','mode','manual-name','manual-twists'])$(id).addEventListener('change',save);$('generate').onclick=generate;$('print').onclick=()=>window.print();$('copy').onclick=async()=>{if(!current){$('status').textContent='Primero genera una partida.';return;}const text=printable(current);try{await navigator.clipboard.writeText(text);$('status').textContent='Preparación copiada.';}catch{const input=document.createElement('textarea');input.value=text;input.style.width='100%';$('result').prepend(input);input.select();$('status').textContent='Selecciona el texto y cópialo manualmente.';}};generate();
+chooseOptions();restore();$('manual-fields').hidden=$('scheme').value!=='manual';$('scheme').addEventListener('change',()=>{$('manual-fields').hidden=$('scheme').value!=='manual';save();});for(const id of ['players','master','mode','manual-name','manual-twists'])$(id).addEventListener('change',save);$('generate').onclick=()=>generate(true);$('print').onclick=()=>window.print();$('copy').onclick=async()=>{if(!current){$('status').textContent='Primero genera una partida.';return;}const text=printable(current);try{await navigator.clipboard.writeText(text);$('status').textContent='Preparación copiada.';}catch{const input=document.createElement('textarea');input.value=text;input.style.width='100%';$('result').prepend(input);input.select();$('status').textContent='Selecciona el texto y cópialo manualmente.';}};generate();
 </script>
 <script>
 // Resúmenes propios basados en el reglamento oficial de Legendary DC, páginas 13–22.
@@ -66,6 +108,6 @@ function dcOpenDictionary(term=''){$('dc-dictionary-body').hidden=false;$('dc-di
 $('dc-dictionary-toggle').addEventListener('click',()=>{if($('dc-dictionary-body').hidden)dcOpenDictionary();else{$('dc-dictionary-body').hidden=true;$('dc-dictionary-toggle').textContent='Abrir diccionario';$('dc-dictionary-toggle').setAttribute('aria-expanded','false');}});
 $('dc-dictionary-search').addEventListener('input',()=>{if($('dc-dictionary-body').hidden)dcOpenDictionary($('dc-dictionary-search').value);else dcRefreshDictionary();});
 for(const term of ['Inspire Hope','Inspire Fear','Transform','Sidekick','Solo Mode']){const b=document.createElement('button');b.type='button';b.textContent=term;b.addEventListener('click',()=>dcOpenDictionary(term));$('dc-dictionary-chips').appendChild(b);}
-const dcOriginalGenerate=generate;generate=function(){dcOriginalGenerate();if(current){const button=document.createElement('button');button.type='button';button.textContent='📖 Consultar reglas de DC';button.style.margin='14px 0';button.addEventListener('click',()=>dcOpenDictionary());$('result').prepend(button);}};
+const dcOriginalGenerate=generate;generate=function(record=false){dcOriginalGenerate(record);if(current){const button=document.createElement('button');button.type='button';button.textContent='📖 Consultar reglas de DC';button.style.margin='14px 0';button.addEventListener('click',()=>dcOpenDictionary());$('result').prepend(button);}};
 dcRefreshDictionary();generate();
 </script><script src="./pwa-setup.js" defer></script></body></html>
