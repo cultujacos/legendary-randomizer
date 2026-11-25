@@ -1,5 +1,5 @@
-const CACHE_NAME = 'legendary-randomizer-v9';
-const APP_FILES = ['./', './index.html', './dc.html', './pwa-setup.js', './version.json', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
+const CACHE_NAME = 'legendary-randomizer-v10';
+const APP_FILES = ['./', './index.html', './dc.html', './no-repeat.js', './pwa-setup.js', './version.json', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', event => {
   // cache: reload fuerza archivos recientes también durante la instalación.
