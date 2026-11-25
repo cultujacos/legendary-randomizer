@@ -6,7 +6,7 @@
 <main><section class="intro"><div><p class="eyebrow">TRES CAJAS. UN MULTIVERSO.</p><h1>¿Y si esta fuera<br>tu próxima <em>partida?</em></h1><p class="subtitle">Reúne a tus héroes. Descubre la amenaza.<br>Deja que el multiverso elija el resto.</p></div><div class="orbit" aria-hidden="true"><div class="portal">WHAT<br><span>IF…?</span></div><i></i><b>OTRA REALIDAD TE ESPERA</b></div></section>
 <fieldset class="collection"><legend>Cajas para el sorteo</legend><div class="set-options"><label><input id="set-wi" type="checkbox" checked> What If…?</label><label><input id="set-sw1" type="checkbox" checked> Secret Wars Vol. 1</label><label><input id="set-sw2" type="checkbox" checked> Secret Wars Vol. 2</label></div><p id="collection-count"></p><small>Preparación para 1–5 jugadores según What If. Los componentes básicos se usan siempre, aunque desactives su contenido del sorteo.</small></fieldset>
 <section class="controls" aria-label="Configurar partida"><div><label for="players">Jugadores</label><select id="players"><option value="1">1 · Solitario</option><option value="2">2 jugadores</option><option value="3">3 jugadores</option><option value="4" selected>4 jugadores</option><option value="5">5 jugadores</option></select></div><div><label for="master">Mastermind</label><select id="master"><option value="-1">Al azar</option></select></div><div><label for="scheme">Plan · Scheme</label><select id="scheme"><option value="-1">Al azar</option></select></div><div><label for="mode">Versión del jefe</label><select id="mode"><option value="normal">Normal</option><option value="epic">Épica</option></select></div><button class="primary" id="generate">Generar partida <span>✦</span></button></section>
-<div class="result-head"><h2>Tu universo de juego</h2><div><button id="go-dictionary" class="quiet" type="button">📖 Consultar habilidades</button><button id="copy" class="quiet">Copiar preparación</button><button id="print" class="quiet">Imprimir</button></div></div><p id="status" role="status"></p>
+<div id="no-repeat-anchor"></div><div class="result-head"><h2>Tu universo de juego</h2><div><button id="go-dictionary" class="quiet" type="button">📖 Consultar habilidades</button><button id="copy" class="quiet">Copiar preparación</button><button id="print" class="quiet">Imprimir</button></div></div><p id="status" role="status"></p>
 <section id="result" aria-live="polite"></section>
 <div id="copy-fallback" hidden><label for="copy-text">Preparación para copiar</label><textarea id="copy-text" rows="12" readonly></textarea></div>
 <details class="sources"><summary>Contenido, reglas y fuentes</summary><p>Con las tres cajas: 38 héroes, 12 masterminds, 20 planes, 17 grupos de villanos y 9 grupos de esbirros. Los nombres se conservan en inglés para localizar tus cartas. Cada componente indica su caja.</p><p>El modo épico sortea solo los cuatro jefes de What If, que tienen reverso épico. Los ocho de Secret Wars se usan en modo normal. Esta herramienta prepara partidas cooperativas; no activa la variante de jugador mastermind.</p><p>Build an Army of Annihilation (otros henchmen de al menos 10 cartas): sustitución elegida por Jaco. Se reserva un grupo adicional distinto del usado en el mazo y se colocan 10 cartas en KO como Annihilation Wave.</p><p>Se mantienen las cantidades de What If y se aplican las modificaciones de cada plan. Los planes tienen prioridad sobre Always Leads. Las reglas durante la partida se consultan en las cartas. El azar no garantiza una dificultad equilibrada.</p><p><a href="https://www.boardgame-news.com/rules/Legendary_WhatIf_Rulebook.pdf" target="_blank" rel="noopener">Reglamento What If</a> · <a href="https://www.legendarycardgame.com/whatif" target="_blank" rel="noopener">Cartas What If</a> · <a href="https://www.legendarycardgame.com/secret-wars-volume-1" target="_blank" rel="noopener">Cartas Secret Wars 1</a> · <a href="https://www.legendarycardgame.com/secret-wars-volume-2" target="_blank" rel="noopener">Cartas Secret Wars 2</a></p></details>
@@ -94,28 +94,30 @@ function settingsFor(p,m,s){let v=p,h=p<4?1:2,heroes=p===1?3:p===5?6:5,b=[0,1,2,
  if(s.note)notes.push(s.note);
  return {v,h,heroes,b,twists,vr,hr,he,notes};
 }
-function generate(p,masterName='',schemeId='',epic=false,sets=['wi','sw1','sw2']){
+function generate(p,masterName='',schemeId='',epic=false,sets=['wi','sw1','sw2'],history=null){
  if(!Number.isInteger(p)||p<1||p>5)throw Error('Elige de 1 a 5 jugadores.');
  if(!sets.length)throw Error('Activa al menos una caja.');
- const c=catalog(sets);let ms=c.masters.filter(m=>(!masterName||m.name===masterName)&&(!epic||m.epic));let ss=c.schemes.filter(s=>(!schemeId||s.id===schemeId)&&!s.unavailable);
+ const c=catalog(sets), eligible=(k,a)=>history?history.available(k,a):a;let ms=c.masters.filter(m=>(!masterName||m.name===masterName)&&(!epic||m.epic)&&(!history||history.allow('masters',m.name)));let ss=c.schemes.filter(s=>(!schemeId||s.id===schemeId)&&!s.unavailable&&(!history||history.allow('schemes',s.name)));
  if(schemeId&&c.schemes.find(s=>s.id===schemeId)?.unavailable)throw Error(c.schemes.find(s=>s.id===schemeId).unavailable);
- if(!ms.length)throw Error('No hay jefes compatibles. El modo épico solo existe para los cuatro jefes de What If.');
+ if(!ms.length)throw Error('No quedan Masterminds compatibles disponibles. Resetea Masterminds o cambia las casillas, las cajas o el modo épico.');
  const pairs=[];for(const m of ms)for(const s of ss){const cfg=settingsFor(p,m,s);let need=cfg.vr.length;if(s.id==='zombies'&&!cfg.vr.some(x=>RISE.includes(x)))need++;if(need<=cfg.v&&cfg.v<=c.villains.length&&cfg.h<=c.henchmen.length)pairs.push([m,s]);}
- if(!pairs.length)throw Error('Esta selección no permite completar los grupos exigidos. Cambia el plan, el jefe o las cajas.');
- const [master,scheme]=shuffle(pairs)[0],cfg=settingsFor(p,master,scheme);let {vr,hr,he,notes}=cfg;
- let villainPool=c.villains.map(x=>x.name);
+ if(!pairs.length)throw Error('No quedan combinaciones compatibles. Resetea una categoría agotada o cambia las cajas y la selección.');
+ for(const [master,scheme] of shuffle(pairs)) {
+ try {
+ const cfg=settingsFor(p,master,scheme);let {vr,hr,he,notes}=cfg;
+ let villainPool=eligible('villains',c.villains.map(x=>x.name));
  if(scheme.id==='zombies'){
   let chosenRise=vr.find(x=>RISE.includes(x))||pick(villainPool.filter(x=>RISE.includes(x)),1)[0];vr=[...new Set([...vr,chosenRise])];villainPool=villainPool.filter(x=>!RISE.includes(x)||x===chosenRise);
   notes.push('Marvel Zombies: se usa exactamente un grupo con Rise of the Living Dead.');
  }
- const heroes=pick(c.heroes.map(x=>x.name),cfg.heroes,hr),villains=pick(villainPool,cfg.v,vr),henchmen=pick(c.henchmen.map(x=>x.name),cfg.h,he);
+ const heroes=pick(eligible('heroes',c.heroes.map(x=>x.name)),cfg.heroes,hr),villains=pick(villainPool,cfg.v,vr),henchmen=pick(eligible('henchmen',c.henchmen.map(x=>x.name)),cfg.h,he);
  const extraHeroes=[],extraMasters=[],extraHenchmen=[],supplies=[];
- if(scheme.id==='annihilation'){const name=pick(c.henchmen.map(x=>x.name).filter(x=>!henchmen.includes(x)),1)[0];extraHenchmen.push({name,count:10,destination:'Pila de KO · sustituye Annihilation Wave'});}
+ if(scheme.id==='annihilation'){const name=pick(eligible('henchmen',c.henchmen.map(x=>x.name)).filter(x=>!henchmen.includes(x)),1)[0];extraHenchmen.push({name,count:10,destination:'Pila de KO · sustituye Annihilation Wave'});}
  if(['zombies','khonshu'].includes(scheme.id)){
-  const name=pick(c.heroes.map(x=>x.name).filter(x=>!heroes.includes(x)),1)[0],count=scheme.id==='zombies'?8:14;extraHeroes.push({name,count});notes.push('Añade '+count+' cartas '+(count===8?'aleatorias ':'')+'de '+name+' al mazo de villanos. Este héroe es adicional y no entra en el mazo de héroes.'+(count===8?' Aparta sus 6 cartas restantes.':''));
+  const name=pick(eligible('heroes',c.heroes.map(x=>x.name)).filter(x=>!heroes.includes(x)),1)[0],count=scheme.id==='zombies'?8:14;extraHeroes.push({name,count});notes.push('Añade '+count+' cartas '+(count===8?'aleatorias ':'')+'de '+name+' al mazo de villanos. Este héroe es adicional y no entra en el mazo de héroes.'+(count===8?' Aparta sus 6 cartas restantes.':''));
  }
  let n=scheme.id==='alliance'?1:['tyrants','secretwars'].includes(scheme.id)?3:0;
- if(n){const pool=c.masters.filter(m=>m.name!==master.name&&(!m.hero||!extraHeroes.some(h=>h.name===m.hero)));for(const name of pick(pool.map(m=>m.name),n)){extraMasters.push({name,tactics:scheme.id==='tyrants'?4:scheme.id==='alliance'?4:1});const m=MASTERS.find(m=>m.name===name);if(m.hero&&scheme.id!=='tyrants'&&!heroes.includes(m.hero)){supplies.push('Reserva las 14 cartas de '+m.hero+': se añaden al mazo de héroes cuando entre '+name+'.');}}
+ if(n){const pool=c.masters.filter(m=>m.name!==master.name&&(!history||history.allow('masters',m.name))&&(!m.hero||!extraHeroes.some(h=>h.name===m.hero)));for(const name of pick(pool.map(m=>m.name),n)){extraMasters.push({name,tactics:scheme.id==='tyrants'?4:scheme.id==='alliance'?4:1});const m=MASTERS.find(m=>m.name===name);if(m.hero&&scheme.id!=='tyrants'&&!heroes.includes(m.hero)){supplies.push('Reserva las 14 cartas de '+m.hero+': se añaden al mazo de héroes cuando entre '+name+'.');}}
   if(scheme.id!=='tyrants')notes.push('Los jefes de reserva se usan en versión normal. No añadas sus grupos Always Leads; sí resuelve sus instrucciones de entrada cuando aparezcan.');
  }
  if(sets.includes('sw1'))supplies.push(scheme.id==='sidekicks'?'Reserva de Sidekicks: 5 cartas (otras 10 están en el mazo de villanos).':'Reserva de Sidekicks: 15 cartas; recluta como máximo uno por turno por 2 puntos de reclutamiento.');
@@ -127,13 +129,19 @@ function generate(p,masterName='',schemeId='',epic=false,sets=['wi','sw1','sw2']
  if(master.hero)notes.push(master.hero+' se incluye obligatoriamente entre los héroes.');
  const getSet=name=>[...HEROES,...VILLAINS,...HENCHMEN,...MASTERS].find(x=>x.name===name)?.set;
  return {version:2,p,sets,master,scheme,epic,heroes,villains,henchmen,extraHeroes,extraMasters,extraHenchmen,supplies,bystanders:cfg.b,twists:cfg.twists,strikes:5,notes,origins:Object.fromEntries([...heroes,...villains,...henchmen,...extraHeroes.map(x=>x.name),...extraMasters.map(x=>x.name),...extraHenchmen.map(x=>x.name)].map(x=>[x,getSet(x)]))};
+ } catch(error) { /* Combinación imposible con las restricciones actuales: probar otra. */ }
+ }
+ throw Error('No quedan suficientes cartas compatibles sin repetir. Revisa los contadores y resetea una categoría o desactiva su casilla.');
 }
 if(typeof module!=='undefined')module.exports={generate,catalog,settingsFor,SETS,HEROES,VILLAINS,HENCHMEN,MASTERS,SCHEMES,RISE};
-</script><script>const $=id=>document.getElementById(id);
+</script><script src="./no-repeat.js"></script><script>const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let current=null;
 const check=t=>'<li><label><input type="checkbox"> <span>'+t+'</span></label></li>';
 const activeSets=()=>Object.keys(SETS).filter(s=>$('set-'+s).checked);
+const marvelHistory=LegendaryNoRepeat.create('marvel',()=>{const c=catalog(activeSets());return {masters:c.masters.map(x=>x.name),heroes:c.heroes.map(x=>x.name),villains:c.villains.map(x=>x.name),henchmen:c.henchmen.map(x=>x.name),schemes:c.schemes.map(x=>x.name)};});
+marvelHistory.mount($('no-repeat-anchor'));
+
 function refreshOptions(){
  const c=catalog(activeSets()),oldMaster=$('master').value,oldScheme=$('scheme').value;
  if(!activeSets().includes('wi'))$('mode').value='normal';
@@ -160,14 +168,14 @@ function render(r){
  <article class="card"><div class="kicker">ANTES DEL PRIMER TURNO</div><h3>Listos para jugar</h3><ul class="checklist">${check('Cada jugador: 8 agentes + 4 soldados S.H.I.E.L.D. Baraja y roba 6 cartas.')}${check('Baraja los '+r.heroes.length+' héroes y revela 5 cartas en el HQ.')}${check('Prepara las reservas de oficiales, heridas y espectadores.')}${check('Lee el plan y las habilidades del mastermind antes de comenzar.')}</ul><ul class="notes">${r.notes.map(n=>'<li>'+linkKeywordsInText(n)+'</li>').join('')}</ul>${quickKeywordHTML(r)}</article></div>`;
  try{localStorage.setItem('legendary-collection-v2',JSON.stringify({sets:activeSets(),p:r.p,mode:$('mode').value,master:$('master').value,scheme:$('scheme').value,result:r}));}catch{}
 }
-function run(){
- try{render(generate(+$('players').value,$('master').value,$('scheme').value,$('mode').value==='epic',activeSets()));$('status').textContent='Partida generada con '+activeSets().map(s=>SETS[s]).join(' + ')+'.';}
+function run(record=false){
+ try{const r=generate(+$('players').value,$('master').value,$('scheme').value,$('mode').value==='epic',activeSets(),marvelHistory);render(r);if(record){marvelHistory.commit({masters:[r.master.name,...r.extraMasters.map(x=>x.name)],heroes:[...r.heroes,...r.extraHeroes.map(x=>x.name)],villains:r.villains,henchmen:[...r.henchmen,...r.extraHenchmen.map(x=>x.name)],schemes:[r.scheme.name]});}$('status').textContent=(record?'Partida registrada. ':'Vista previa (no registrada). ')+'Cajas: '+activeSets().map(s=>SETS[s]).join(' + ')+'.';}
  catch(e){current=null;$('result').replaceChildren();$('status').textContent=e.message;$('copy').disabled=true;$('print').disabled=true;}
 }
-$('generate').onclick=run;
+$('generate').onclick=()=>run(true);
 for(const id of ['players','master','scheme'])$(id).onchange=run;
 $('mode').onchange=()=>{refreshOptions();run();};
-for(const s of Object.keys(SETS))$('set-'+s).onchange=()=>{refreshOptions();run();};
+for(const s of Object.keys(SETS))$('set-'+s).onchange=()=>{refreshOptions();marvelHistory.draw();run();};
 $('print').onclick=()=>window.print();
 $('copy').onclick=async()=>{
  if(!current)return;const r=current;
