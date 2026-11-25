@@ -1,5 +1,5 @@
 {
-  "version": "1.6.1",
-  "date": "2026-11-21",
-  "notes": "Shatter e Investigate en el diccionario de Marvel."
+  "version": "1.7.0",
+  "date": "2026-11-25",
+  "notes": "Sorteo sin repeticiones configurable por categoría, con historial independiente para Marvel y DC, reset y avisos de agotamiento."
 }
