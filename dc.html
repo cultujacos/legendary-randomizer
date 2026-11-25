@@ -39,6 +39,8 @@ function lineList(items){return '<ul>'+items.map(t=>'<li><label><input type="che
 function card(title,content){return '<article class="card"><h3>'+escapeHTML(title)+'</h3>'+content+'</article>';}
 function formatResult(r){const groupInfo=r.p===1?'2 cartas al mazo y 2 en la ciudad':'10 cartas de cada grupo';return `<div class="grid">${card('🦸 Héroes',lineList(r.heroes.map(x=>x+' · 14 cartas')))}${card('🎭 Mastermind y plan','<h3>'+escapeHTML(r.master)+(r.epic?' · Épico':'')+'</h3><p>'+escapeHTML(r.scheme.name)+'</p><p class="pill">'+r.scheme.twists+' Scheme Twists</p>')}${card('👹 Villanos y esbirros',lineList([...r.villains.map(x=>x+' · 8 cartas'),...r.henchmen.map(x=>x+' · '+groupInfo)]))}${card('📦 Preparación',lineList([r.bystanders+' Bystanders','5 Master Strikes',r.scheme.twists+' Scheme Twists','Cada jugador: 8 Checkmate Pawns + 4 Checkmate Knights; robar 6 cartas','Preparar Supports, Daring Sidekicks y Wounds','Marcador de Hope/Fear listo','Comprobar y aplicar el grupo Always Leads del Mastermind','Leer y aplicar todas las instrucciones de Setup del Scheme',...(r.p>=4?['Ronda inicial: no revelar villano en el primer turno de cada jugador']:[])]))}</div><p class="note">Recuerda: algunas cartas de DC transforman héroes y algunos planes modifican la preparación. Este resumen no reemplaza sus instrucciones particulares.</p>`;}
 function generate(record=false){
+ current=null;
+ $('result').replaceChildren();
  save();
  const p=Number($('players').value),cfg=counts[p];
  const eligible=(k,names)=>dcHistory.available(k,names);
